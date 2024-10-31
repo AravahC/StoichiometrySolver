@@ -2,7 +2,9 @@ import streamlit as st
 
 import math
 #import sympy as sp
-from sympy import solve, Eq, symbols
+from sympy import solve
+from sympy import Eq
+from sympy import symbols
 from fractions import Fraction
 
 
