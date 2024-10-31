@@ -1,7 +1,8 @@
 import streamlit as st
 
 import math
-import sympy as sp
+#import sympy as sp
+from sympy import solve, Eq, symbols
 from fractions import Fraction
 
 
@@ -271,7 +272,7 @@ class Separate:
         stringVariables = ''
         for i in range(totalCol):
             stringVariables += "c" + str(i) + ' '
-        symbols = sp.symbols(stringVariables)
+        symbol = symbols(stringVariables)
 
         # Initialize a list to store the equations
         equations = []
@@ -282,11 +283,11 @@ class Separate:
             coefficients = row[:-1]  # Coefficients for each variable (excluding the last one)
         
             # Create the equation using the dot product
-            equationw = sp.Eq(sum(coef * sym for coef, sym in zip(coefficients, symbols)), constant)
+            equationw = Eq(sum(coef * sym for coef, sym in zip(coefficients, symbol)), constant)
             equations.append(equationw)  # Append the equation to the list
 
         # Solve the system of equations
-        solution = sp.solve(equations, symbols)
+        solution = solve(equations, symbol)
         #print("Solution = ", solution)
         const = 1
         solutionArray = list(solution.values())
