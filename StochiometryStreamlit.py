@@ -307,6 +307,7 @@ class Separate:
         
 
         solvedEquation = ""
+        #turns the solved equation matrix back into a string equation
         for side in range(len(equation)):
             for mol in range(len(equation[side])):
                 solvedEquation += str(solutionArray[mol + side * len(equation[0])])
@@ -322,26 +323,17 @@ class Separate:
                     solvedEquation += " + "  # Add spacing between molecules
             if(side==0):
                 solvedEquation+= " = "
-
+                
+        #turns the equation into latex to make it easier to read
         solvedEquation = solvedEquation.replace("+  ", "")
         solvedEquation = solvedEquation.replace("=", "\\longrightarrow")
-        #print("Final solved equation: ", solvedEquation[:-3])  # Remove trailing '+ ' for clean output
+        
+        #turns the solution into latex
         st.latex(r""" """ +solvedEquation+""" """)
-        #st.write(solved)
+       
         return solvedEquation
         
 
-
-
-##
-# Example usage:
-##equation_input = input("Enter a Chemical Equation with an =: ")
-##separate = Separate(equation_input)
-##if separate.isInvalid() is None:
-##    separate.elementSolve()
-##else:
-##    print(separate.isInvalid())
-##
 
 
 
@@ -355,46 +347,10 @@ with st.form(key="myForm"):
     st.form_submit_button("Solve")
     
 separate = Separate(userEquation)
-##if(separate.invalid==False):
-##    userEquation = separate.sides()
-##    if(separate.invalid==False):
-##        userEquation = separate.molecules()
-##        if(separate.invalid==False):
-##            userEquation = separate.elements()
-##            if(separate.invalid==False):
-##                userEquation = separate.elementSolve()
-##                solution =  userEquation
-##                #print(solution)
-##                st.latex(r""" """ +solution+""" """)
-##            else:
-##                st.write(separate.isInvalid())
-##        else:
-##            st.write(separate.isInvalid())
-##    else:
-##        st.write(separate.isInvalidReason)
-##else:
-##    st.write(separate.isInvalid())
 
-#st.latex(r"""e^{i\pi}+1 = 0 """)
 
 userEquation = separate.elementSolve()
 solution =  userEquation
 #print(solution)
 
 
-
-##if userEquation.count('=')!=1:
-##    print("Only one = is allowed. Please try later. ")
-##else:
-##    separate = Separate(userEquation)
-##    userEquation = separate.sides(userEquation)
-##    userEquation = separate.molecules(userEquation)
-##    separate.elements(userEquation)
-##    #print("Is Co an element? ", isElement(userEquation))
-##    #print the answer
-##    solution = True
-##    totalMatrix = separate.elementSolve(userEquation)
-##    if solution ==True:
-##        print("The balanced equation is .........", userEquation)
-##    else:
-##        print("No Solution! :-)")
