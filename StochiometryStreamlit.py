@@ -235,6 +235,7 @@ class Separate:
         # sympy matrix solving does not work for chemical equations who have two or more molecules than the num of elements
         if((totalRow+1)<(totalCol)):
             invalid=True
+            st.write("Sorry, unable to solve the equation at this time. Please try another equation.")
             return invalid
 
         # Initialize matrix with zeros
