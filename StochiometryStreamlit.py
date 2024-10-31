@@ -232,7 +232,10 @@ class Separate:
            st.write(self.invalid)
            return self.invalid
         totalRow = len(num_elements)
-        bob = 0
+        # sympy matrix solving does not work for chemical equations who have two or more molecules than the num of elements
+        if((totalRow+1)<(totalCol)):
+            invalid=True
+            return invalid
 
         # Initialize matrix with zeros
         totalMatrix = [[0 for _ in range(totalCol)] for _ in range(totalRow)]
