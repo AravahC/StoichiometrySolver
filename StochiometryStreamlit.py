@@ -15,7 +15,7 @@ class Separate:
         self.invalid=False
         self.isInvalidReason = ""
 
-    # checks if the equation is invalid. if it is, it prints general error
+    # checks if the equation is invalid. if it is, it returns the reason and prints it
     def isInvalid(self):
         self.invalid=True
         return self.isInvalidReason
@@ -43,10 +43,11 @@ class Separate:
     def molecules(self):
         if (self.invalid==True):
             return self.invalid
+        # Call sides method to get the sides
         equation = self.sides()
         if(self.invalid==True):
             return self.invalid
-        # Call sides method to get the sides
+        #checks if the sides ends in a +
         if(equation[0][-1]=='+'):
             st.write("Side ends with a +. Invalid")
             self.invalid = True
@@ -62,34 +63,27 @@ class Separate:
             return self.invalid
         equation[1] = equation[1].split('+')
         
-        #print(equation)
+        #ensures the equation is not invalid
         if(self.invalid==True):
             return self.invalid
         return equation
-
+        
+    #function checks if the potential string is an element. if so, returns the element. 
     def isElement(self, potElementString):
         elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne","Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca","Sc", "Ti", "V", "Cr", "Mn", "Fe", "Ni", "Co", "Cu", "Zn","Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"]
         numEls = len(elements)
-        #x = 0
+        #finds the element
         elementFound = False
         for x in range(len(elements)):
             if potElementString == elements[x]:
-                #result = print("It's an Element, in fact, it is: ", elements[x])
                 elementFound = True
-                #print("I am stuck in the loop!")
-            #x+=1
+
+        #returns invalid if the function has an invalid element
         if elementFound==False:
-            #print("The element", potElementString, "does not exist. Please try again.")
-            #self.isInvalidReason = "The element" + potElementString+ "does not exist. Please try again."
-            #return self.isInvalid()
             st.write("The element" + potElementString+ "does not exist. Please try again.")
             self.invalid=True
             return self.invalid
             
-       # else:
-        #    isInvalidReason = "I'm sorry, I do  not understand that. Please try again: " + potElementString
-         #   return self.isInvalid()
-            #x+=1
         return elementFound
 
     # This separates it into elements while keeping the separations of the molecules and sides in a nested array
@@ -97,6 +91,7 @@ class Separate:
         if(self.invalid):
             return self.invalid
         equation = self.molecules()# Call molecules to get the separated molecules
+        #checks if molecules returns invalid
         if(self.invalid):
             return self.invalid
         length_equation = len(equation)
@@ -118,7 +113,6 @@ class Separate:
                         while letter < mol_len and equation[side][mol][letter].isnumeric():
                             whole_num += equation[side][mol][letter]
                             letter += 1  # increment letter directly
-                        #print("Number: ", whole_num)
                         parsed_mol.append(whole_num)
 
                     # Handle elements (letters)
@@ -134,8 +128,7 @@ class Separate:
                                 letter += 1  # skip the one letter
 
                             # Check if it's a valid element
-                            if self.isElement(potE):  # Changed to self.isElement
-                                #print("We got an element!: ", potE)
+                            if self.isElement(potE): 
                                 parsed_mol.append(potE)
                             else:
                                 self.invalid=True
@@ -152,16 +145,11 @@ class Separate:
 
                     # Handle parentheses
                     elif equation[side][mol][letter] == '(':
-                        #print("It's a (")
-                        #parsed_mol.append('(')
                         letter += 1
                         self.isInvalidReason = "Sorry, we do not handle equations with parentheses at this time."
                         st.write(self.isInvalidReason)
                         
-                        #return false
                     elif equation[side][mol][letter] == ')':
-                        #print("It's a )")
-                        #parsed_mol.append(')')
                         letter += 1
                         isInvalidReason = "Sorry, we do not handle equations with parentheses at this time."
                         st.write(isInvalidReason)
@@ -170,16 +158,14 @@ class Separate:
 
                     # Handle unexpected characters
                     else:
-                        #print("Unexpected character: ", equation[side][mol][letter])
                         st.write("Unexpected character: ", equation[side][mol][letter], ". Will ignore")
                         letter += 1
 
                 # Replace the molecule with its parsed version
                 equation[side][mol] = parsed_mol
 
-        #print("")
         return equation  # Return parsed equation
-
+    #returns an array of the elements in the equation. if there are different elements, returns invalid is true
     def elementCount(self):
         equation = self.elements()  # Call elements to get parsed elements
   # Return empty if invalid equation
@@ -201,20 +187,17 @@ class Separate:
                     elements1.append(el)  # Append only if it's unique
 
         if (sorted(elements0) == sorted(elements1)):
-            #print("Same: ", elements0)
-            #print("There are ", len(elements0), "elements")
             return elements0
         else:
             st.write("Equation needs to have the same elements on both sides. Error")
-            #print(elements0, "!=", elements1)
             self.invalid=True
             return self.invalid
-
+            
+    #solves the equation
     def elementSolve(self):
         if(self.invalid):
             return self.invalid
         equation = self.elements()  # Call elements to get parsed elements
-        #print(equation)
         if(self.invalid):
             return self.invalid
         side0 = equation[0]
@@ -222,12 +205,9 @@ class Separate:
 
         num_elements = self.elementCount()  # Number of unique elements (rows)
         if(num_elements == True):
-        #if not num_elements:
-            #st.write("Element count failed")
             return True# Handle no valid elements case
         
         totalCol = len(side0) + len(side1)  # Total number of molecules (columns)
-       # print("Total columns = ", totalCol)
         if(self.invalid==True):
            st.write(self.invalid)
            return self.invalid
@@ -241,6 +221,7 @@ class Separate:
         # Initialize matrix with zeros
         totalMatrix = [[0 for _ in range(totalCol)] for _ in range(totalRow)]
         curEl = 0
+        #puts the elements in the matrix
         for side in range(2):
             for col in range(len(equation[side])):
                 for el in range(len(equation[side][col])):
@@ -256,7 +237,6 @@ class Separate:
                                 st.write("I'm unsure what to do")
                                 self.invalid = True
                                 return self.invalid
-                #print(totalMatrix)
 
         # Make matrix square
         while len(totalMatrix) != len(totalMatrix[0]):
@@ -294,8 +274,8 @@ class Separate:
 
         # Solve the system of equations
         solution = solve(equations, symbol)
-        #print("Solution = ", solution)
         const = 1
+        #clear the denominators from the new coefficients
         solutionArray = list(solution.values())
         for i in range(len(solutionArray)):
             solutionArray[i] = abs(solutionArray[i])
@@ -303,10 +283,10 @@ class Separate:
             fracJ = Fraction(solutionArray[j])
             if solutionArray[j]<1/const:
                 const = fracJ.denominator
-        #print(solutionArray)
+                
         for k in range(len(solutionArray)):
             solutionArray[k]*=const
-        #print(solutionArray)
+            
         solutionArray.append(const)
         
 
